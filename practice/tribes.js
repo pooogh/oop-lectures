@@ -5,11 +5,57 @@ class TribeMember {
         this.name = name;
         this.age = Math.round(Math.random() * 100);
         this.health = Math.round(Math.random() * 100);
+        this.tools = [];
+        this.damage = 7;
     }
 
     getInfo() {
         console.log(`Абориген ${this.name}, ему ${this.age} лет и его здоровье равно ${this.health}`);
-    }    
+    }
+    
+    takeDamage(damage) {
+        this.health -= damage;
+        console.log(`${this.name} получил ${damage} урона. Здоровье: ${this.health}`);
+
+        if (this.health <= 0) {
+            console.log(`${this.name} умер, соре.`);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    attack(target) {
+        console.log(`\n${this.name} атакует ${target.name}`);
+        if (this.tools.length === 0) {
+            console.log(`${this.name} пытается атаковать, но теперь руками, соре.`);
+        } else {
+            console.log(`${this.name} использует инструмент ${this.tools.at(0).name}`);
+        }
+        let tool = this.tools.at(0) || 0; // выбор предмета (объект)
+        let toolDamage = tool.damage; // вытащили урон оружия
+
+        if (tool.use()) {
+            let isKilled = target.takeDamage(this.damage + toolDamage);
+            if (isKilled) {
+                target = null;
+            }
+        }
+    }
+
+    loot() {
+
+    }
+
+    addTool(tool) {
+        this.tools.push(tool);
+    }
+
+    getToolList() {
+        const list = this.tools.map(({name, durability}) => `${name}, ${durability}`)
+        console.log(`${this.name} имеет в багаже: ${list.join('; ')}`);
+    }
+
 }
 
 // дочерние классы
@@ -40,12 +86,28 @@ class Apache extends TribeMember {
 }
 
 // создаем класс реднеков (здоровье выше 60, навык войны)
+class Redneck extends TribeMember {
+    constructor(name) {
+        // обращаемся к конструктору TribeMember
+        super(name);
+        this.warSkill = 60 + Math.round(Math.random() * 40);
+        if (this.health <= 40) {
+            this.health = 60 + Math.round(Math.random() * 40)
+        }
+    }
 
+    getDescription() {
+        this.getInfo();
+        console.log(`Абориген ${this.name} живет в племени Реднек, имеет навык войны ${this.warSkill}`);
+    }
+}
 // создадим класс оружия
 class Item {
     constructor(name) {
         this.name = name;
-        this.durability = Math.round(Math.random() * 5);
+        this.durability = 100;
+        // Math.round(Math.random() * 5);
+        this.damage = 5;
     }
 
     use() {
@@ -64,6 +126,7 @@ class Weapon extends Item {
     constructor(name) {
         super(name);
         this.durability += 3;
+        this.damage += Math.round(Math.random() * 5);
     }
 }
 
@@ -75,11 +138,36 @@ class Tools extends Item {
 
 const Vitaly = new Apache('Vitaly');
 Vitaly.getDescription();
-const Daniil = new TribeMember('Daniil');
-console.log(Vitaly)
+const Daniil = new Redneck('Daniil');
+Daniil.getDescription();
+// console.log(Vitaly);
 
 const motiga = new Tools('motiga');
 const shovel = new Tools('shovel');
 Vitaly.addTool(motiga);
 Vitaly.addTool(shovel);
 Vitaly.getToolList();
+
+const axe = new Weapon('axe');
+Daniil.addTool(axe);
+Daniil.getToolList();
+
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+Vitaly.attack(Daniil);
+console.log(Daniil);
+
+
+
+
+
+// общий класс аборигены - имя, здоровье, возраст, предметы; методы: получаем урон, атакуем, лутаем, инфо
+// апаче - навык земледелия
+// реднеки - навык войны
+// общий класс предметы - название, прочность, урон
+// инструменты - --//--
+// оружие - доп урон
