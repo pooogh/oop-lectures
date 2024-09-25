@@ -63,6 +63,7 @@ export class Apache extends TribeMember {
     constructor(name) {
         // обращаемся к конструктору TribeMember
         super(name);
+        this.className = 'apache';
         this.farmingSkill = 60 + Math.round(Math.random() * 40);
         if (this.health >= 40) {
             this.health = Math.round(Math.random() * 40)
@@ -90,6 +91,7 @@ export class Redneck extends TribeMember {
     constructor(name) {
         // обращаемся к конструктору TribeMember
         super(name);
+        this.className = 'redneck';
         this.warSkill = 60 + Math.round(Math.random() * 40);
         if (this.health <= 40) {
             this.health = 60 + Math.round(Math.random() * 40)
@@ -125,6 +127,7 @@ class Item {
 export class Weapon extends Item {
     constructor(name) {
         super(name);
+        this.className = 'weapon';
         this.durability += 3;
         this.damage += Math.round(Math.random() * 5);
     }
@@ -133,6 +136,7 @@ export class Weapon extends Item {
 export class Tools extends Item {
     constructor(name) {
         super(name);
+        this.className = 'tool';
     }
 }
 
