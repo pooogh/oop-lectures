@@ -59,7 +59,7 @@ class TribeMember {
 }
 
 // дочерние классы
-class Apache extends TribeMember {
+export class Apache extends TribeMember {
     constructor(name) {
         // обращаемся к конструктору TribeMember
         super(name);
@@ -86,7 +86,7 @@ class Apache extends TribeMember {
 }
 
 // создаем класс реднеков (здоровье выше 60, навык войны)
-class Redneck extends TribeMember {
+export class Redneck extends TribeMember {
     constructor(name) {
         // обращаемся к конструктору TribeMember
         super(name);
@@ -122,7 +122,7 @@ class Item {
     }
 }
 
-class Weapon extends Item {
+export class Weapon extends Item {
     constructor(name) {
         super(name);
         this.durability += 3;
@@ -130,7 +130,7 @@ class Weapon extends Item {
     }
 }
 
-class Tools extends Item {
+export class Tools extends Item {
     constructor(name) {
         super(name);
     }
