@@ -1,3 +1,13 @@
 {
-    "alive": []
+  "alive": [
+    {
+      "name": "",
+      "age": 81,
+      "health": 8,
+      "tools": [],
+      "damage": 7,
+      "className": "apache",
+      "farmingSkill": 63
+    }
+  ]
 }

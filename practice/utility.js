@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
+import readlineSync from 'readline-sync';
 import Apache from './classes/apache.js';
 import Redneck from './classes/redneck.js';
 import Tool from './classes/tool.js';
@@ -8,10 +9,29 @@ import Weapon from './classes/weapon.js';
 
 const getPath = (fPath) => path.resolve() + fPath;
 
-// ф-ция, создающая новый объект класса и создяющая его в p.json
+// ф-ция, создающая новый объект класса и сохраняющая его в p.json
+const createObject = () => {
+  const classes = ['Apache', 'Redneck', 'Tool', 'Weapon'];
+  const classToCreate = readlineSync.keyInSelect(classes, 'Что создаем?');
+
+  if (classToCreate === -1) {
+    console.log('ну не надо, так не надо');
+    return false;
+  }
+
+  const name = classToCreate < 2 ? readlineSync.question('Имя: ')
+    : readlineSync.question('Название: ');
+
+  const obj = classToCreate === 0 ? new Apache(name)
+    : classToCreate === 1 ? new Redneck(name)
+      : classToCreate === 2 ? new Tool(name) : new Weapon(name);
+
+  console.log(obj);
+  setPerson(obj);
+};
 
 const setPerson = (person) => {
-  const fPath = getPath('/people.json');
+  const fPath = getPath('/data/people.json');
   const listOfPerson = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
   listOfPerson.alive.push(person);
   fs.writeFileSync(fPath, JSON.stringify(listOfPerson, null, 2), 'utf-8');
@@ -80,5 +100,5 @@ const backToClass = (name) => {
 };
 
 export {
-  setPerson, deleteDeadPerson, updatePerson, backToClass,
+  setPerson, deleteDeadPerson, updatePerson, backToClass, createObject
 };
