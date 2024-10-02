@@ -13,6 +13,15 @@ const getObject = () => JSON.parse(fs.readFileSync(getPath(), 'utf-8'));
 
 const updateJSON = (dataToUpdate) => fs.writeFileSync(getPath(), JSON.stringify(dataToUpdate, null, 2), 'utf-8');
 
+const setObject = (object) => {
+  const listOfObjects = getObject();
+  if (['apache', 'redneck'].includes(object.className)) {
+    listOfObjects.alive.push(object);
+  } else {
+    listOfObjects.items.push(object);
+  }
+  updateJSON(listOfObjects);
+};
 // ф-ция, создающая новый объект класса и сохраняющая его в p.json
 const createObject = () => {
   const classes = ['Apache', 'Redneck', 'Tool', 'Weapon'];
@@ -31,40 +40,37 @@ const createObject = () => {
       : classToCreate === 2 ? new Tool(name) : new Weapon(name);
 
   console.log(obj);
-  setPerson(obj);
+  setObject(obj);
   return true;
 };
 
-const setPerson = (person) => {
-  const listOfPerson = getObject();
-  listOfPerson.alive.push(person);
-  updateJSON(listOfPerson);
-};
+// ф-ция, добавляющая конкретный item к конкретному person
 
-const deleteDeadPerson = (person) => {
-  const listOfPerson = getObject();
-  const nameOfDead = person.name;
-  const filtered = listOfPerson.alive.filter(({ name }) => name !== nameOfDead);
-  listOfPerson.alive = filtered;
-  updateJSON(listOfPerson);
+
+const deleteDeadObject = (object) => {
+  const listOfObjects = getObject();
+  const nameOfDead = object.name;
+  const filtered = listOfObjects.alive.filter(({ name }) => name !== nameOfDead);
+  listOfObjects.alive = filtered;
+  updateJSON(listOfObjects);
 };
 
 // изменение данный
-const updatePerson = (person) => {
-  const listOfPerson = getObject();
-  const nameToUpdate = person.name;
-  const filtered = listOfPerson.alive.filter(({ name }) => name !== nameToUpdate);
-  listOfPerson.alive = filtered;
-  listOfPerson.alive.push(person);
-  updateJSON(listOfPerson);
+const updateObject = (object) => {
+  const listOfObjects = getObject();
+  const nameToUpdate = object.name;
+  const filtered = listOfObjects.alive.filter(({ name }) => name !== nameToUpdate);
+  listOfObjects.alive = filtered;
+  listOfObjects.alive.push(object);
+  updateJSON(listOfObjects);
 };
 
 // возвращение объектов json к типу объектов класса
 const backToClass = (name) => {
   // читаем json
-  const listOfPerson = getObject();
+  const listOfObjects = getObject();
   // ищем нужный объект
-  const filtered = listOfPerson.alive.filter(({ nameIter }) => name === nameIter).at(0);
+  const filtered = listOfObjects.alive.filter(({ nameIter }) => name === nameIter).at(0);
   // [{}] -> {}
   // преоразовываем в объект класса
   let classObject;
@@ -101,5 +107,5 @@ const backToClass = (name) => {
 };
 
 export {
-  setPerson, deleteDeadPerson, updatePerson, backToClass, createObject,
+  setObject, deleteDeadObject, updateObject, backToClass, createObject,
 };
