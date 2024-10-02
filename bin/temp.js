@@ -1,4 +1,4 @@
-import { createObject } from "../practice/utility.js";
+import { createObject } from '../practice/utility.js';
 
 createObject();
 

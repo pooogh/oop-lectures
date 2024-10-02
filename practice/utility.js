@@ -7,7 +7,11 @@ import Redneck from './classes/redneck.js';
 import Tool from './classes/tool.js';
 import Weapon from './classes/weapon.js';
 
-const getPath = (fPath) => path.resolve() + fPath;
+const getPath = () => `${path.resolve()}/data/people.json`;
+
+const getObject = () => JSON.parse(fs.readFileSync(getPath(), 'utf-8'));
+
+const updateJSON = (dataToUpdate) => fs.writeFileSync(getPath(), JSON.stringify(dataToUpdate, null, 2), 'utf-8');
 
 // ф-ция, создающая новый объект класса и сохраняющая его в p.json
 const createObject = () => {
@@ -28,40 +32,37 @@ const createObject = () => {
 
   console.log(obj);
   setPerson(obj);
+  return true;
 };
 
 const setPerson = (person) => {
-  const fPath = getPath('/data/people.json');
-  const listOfPerson = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+  const listOfPerson = getObject();
   listOfPerson.alive.push(person);
-  fs.writeFileSync(fPath, JSON.stringify(listOfPerson, null, 2), 'utf-8');
+  updateJSON(listOfPerson);
 };
 
 const deleteDeadPerson = (person) => {
-  const fPath = getPath('/people.json');
-  const listOfPerson = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+  const listOfPerson = getObject();
   const nameOfDead = person.name;
   const filtered = listOfPerson.alive.filter(({ name }) => name !== nameOfDead);
   listOfPerson.alive = filtered;
-  fs.writeFileSync(fPath, JSON.stringify(listOfPerson, null, 2), 'utf-8');
+  updateJSON(listOfPerson);
 };
 
 // изменение данный
 const updatePerson = (person) => {
-  const fPath = getPath('/people.json');
-  const listOfPerson = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+  const listOfPerson = getObject();
   const nameToUpdate = person.name;
   const filtered = listOfPerson.alive.filter(({ name }) => name !== nameToUpdate);
   listOfPerson.alive = filtered;
   listOfPerson.alive.push(person);
-  fs.writeFileSync(fPath, JSON.stringify(listOfPerson, null, 2), 'utf-8');
+  updateJSON(listOfPerson);
 };
 
 // возвращение объектов json к типу объектов класса
 const backToClass = (name) => {
   // читаем json
-  const fPath = getPath('/people.json');
-  const listOfPerson = JSON.parse(fs.readFileSync(fPath, 'utf-8'));
+  const listOfPerson = getObject();
   // ищем нужный объект
   const filtered = listOfPerson.alive.filter(({ nameIter }) => name === nameIter).at(0);
   // [{}] -> {}
@@ -100,5 +101,5 @@ const backToClass = (name) => {
 };
 
 export {
-  setPerson, deleteDeadPerson, updatePerson, backToClass, createObject
+  setPerson, deleteDeadPerson, updatePerson, backToClass, createObject,
 };
