@@ -45,7 +45,19 @@ const createObject = () => {
 };
 
 // ф-ция, добавляющая конкретный item к конкретному person
+const addItem = () => {
+  const listOfObjects = getObject();
 
+  const listOfNames = listOfObjects.alive.map(({name}) => name);
+  const indexOfName = readlineSync.keyInSelect(listOfNames, 'Кому добавить? ');
+
+  const listOfItems = listOfObjects.item.map(({name}) => name);
+  const indexOfItem = readlineSync.keyInSelect(listOfItems, 'Что добавить? ');
+
+  const person = backToClass(listOfObjects.alive.at(indexOfName));
+  const item = backToClass(listOfObjects.item.at(indexOfItem));
+  person.addTool(item);
+}
 
 const deleteDeadObject = (object) => {
   const listOfObjects = getObject();
