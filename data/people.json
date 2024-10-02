@@ -1,14 +1,43 @@
 {
   "alive": [
     {
-      "name": "",
-      "age": 81,
-      "health": 8,
+      "name": "Nikita",
+      "age": 61,
+      "health": 11,
       "tools": [],
       "damage": 7,
       "className": "apache",
-      "farmingSkill": 63
+      "farmingSkill": 97
+    },
+    {
+      "name": "Maxim",
+      "age": 88,
+      "health": 36,
+      "tools": [
+        {
+          "name": "motiga",
+          "durability": 100,
+          "damage": 5,
+          "className": "tool"
+        }
+      ],
+      "damage": 7,
+      "className": "apache",
+      "farmingSkill": 73
     }
   ],
-  "item": []
+  "item": [
+    {
+      "name": "motiga",
+      "durability": 100,
+      "damage": 5,
+      "className": "tool"
+    },
+    {
+      "name": "axe",
+      "durability": 103,
+      "damage": 6,
+      "className": "weapon"
+    }
+  ]
 }

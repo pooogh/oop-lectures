@@ -1,6 +1,8 @@
-import { createObject } from '../practice/utility.js';
+import { createObject, addItem } from '../practice/utility.js';
 
-createObject();
+// createObject();
+// createObject();
+addItem();
 
 // import Apache from '../practice/classes/apache.js';
 // import Redneck from '../practice/classes/redneck.js';

@@ -18,7 +18,7 @@ const setObject = (object) => {
   if (['apache', 'redneck'].includes(object.className)) {
     listOfObjects.alive.push(object);
   } else {
-    listOfObjects.items.push(object);
+    listOfObjects.item.push(object);
   }
   updateJSON(listOfObjects);
 };
@@ -54,12 +54,19 @@ const addItem = () => {
   const listOfItems = listOfObjects.item.map(({name}) => name);
   const indexOfItem = readlineSync.keyInSelect(listOfItems, 'Что добавить? ');
 
-  const person = backToClass(listOfObjects.alive.at(indexOfName));
-  const item = backToClass(listOfObjects.item.at(indexOfItem));
+  const person = backToClass(listOfObjects.alive.at(indexOfName).name);
+  const item = backToClass(listOfObjects.item.at(indexOfItem).name);
+  if (person.className === 'apache' && item.className === 'weapon') {
+    console.log('невозможно добавить оружие классу Апаче');
+    return false;
+  }
   person.addTool(item);
+  console.log(person);
+  updateObject(person);
+  return true;
 }
 
-const deleteDeadObject = (object) => {
+const deleteObject = (object) => {
   const listOfObjects = getObject();
   const nameOfDead = object.name;
   const filtered = listOfObjects.alive.filter(({ name }) => name !== nameOfDead);
@@ -78,30 +85,37 @@ const updateObject = (object) => {
 };
 
 // возвращение объектов json к типу объектов класса
-const backToClass = (name) => {
+const backToClass = (nameToFind) => {
+  // console.log(nameToFind);
   // читаем json
   const listOfObjects = getObject();
   // ищем нужный объект
-  const filtered = listOfObjects.alive.filter(({ nameIter }) => name === nameIter).at(0);
+  let filtered = listOfObjects.alive.filter(({ name }) => name === nameToFind);
+  // console.log(`first search ${filtered}`);
+  if (filtered.length === 0) {
+    filtered = listOfObjects.item.filter(({ name }) => name === nameToFind);
+    // console.log(`second search ${filtered}`);
+  };
+  const jsonObject = filtered.at(0);
   // [{}] -> {}
   // преоразовываем в объект класса
   let classObject;
-  switch (filtered.className) {
+  switch (jsonObject.className) {
     case 'apache':
-      classObject = new Apache(name);
+      classObject = new Apache(nameToFind);
       break;
     case 'redneck':
-      classObject = new Redneck(name);
+      classObject = new Redneck(nameToFind);
       break;
     case 'weapon':
-      classObject = new Weapon(name);
+      classObject = new Weapon(nameToFind);
       break;
     default:
-      classObject = new Tool(name);
+      classObject = new Tool(nameToFind);
       break;
   }
   // указываем конкретные значения ключей
-  const entries = Object.entries(filtered);
+  const entries = Object.entries(jsonObject);
   // [[key, v], [key2, v2]...]
   // for ([key, value] of entries) {
   //   if (_.isObject(value)) {
@@ -119,5 +133,5 @@ const backToClass = (name) => {
 };
 
 export {
-  setObject, deleteDeadObject, updateObject, backToClass, createObject,
+  setObject, deleteDeadObject, updateObject, backToClass, createObject, addItem
 };
