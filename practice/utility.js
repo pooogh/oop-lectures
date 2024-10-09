@@ -133,5 +133,5 @@ const backToClass = (nameToFind) => {
 };
 
 export {
-  setObject, deleteDeadObject, updateObject, backToClass, createObject, addItem
+  setObject, updateObject, backToClass, createObject, addItem
 };

@@ -1,15 +1,6 @@
 {
   "alive": [
     {
-      "name": "Nikita",
-      "age": 61,
-      "health": 11,
-      "tools": [],
-      "damage": 7,
-      "className": "apache",
-      "farmingSkill": 97
-    },
-    {
       "name": "Maxim",
       "age": 88,
       "health": 36,
@@ -24,6 +15,17 @@
       "damage": 7,
       "className": "apache",
       "farmingSkill": 73
+    },
+    {
+      "name": "Nikita",
+      "age": 61,
+      "health": 11,
+      "tools": [
+
+      ],
+      "damage": 7,
+      "className": "apache",
+      "farmingSkill": 97
     }
   ],
   "item": [
