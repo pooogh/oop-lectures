@@ -13,6 +13,16 @@ const getObject = () => JSON.parse(fs.readFileSync(getPath(), 'utf-8'));
 
 const updateJSON = (dataToUpdate) => fs.writeFileSync(getPath(), JSON.stringify(dataToUpdate, null, 2), 'utf-8');
 
+const classesConstructor = (key, name) => {
+  const classes = {
+    0: new Apache(name),
+    1: new Redneck(name),
+    2: new Tool(name),
+    3: new Weapon(name),
+  };
+  return classes[key];
+};
+
 const setObject = (object) => {
   const listOfObjects = getObject();
   if (['apache', 'redneck'].includes(object.className)) {
@@ -35,9 +45,10 @@ const createObject = () => {
   const name = classToCreate < 2 ? readlineSync.question('Имя: ')
     : readlineSync.question('Название: ');
 
-  const obj = classToCreate === 0 ? new Apache(name)
-    : classToCreate === 1 ? new Redneck(name)
-      : classToCreate === 2 ? new Tool(name) : new Weapon(name);
+  // const obj = classToCreate === 0 ? new Apache(name)
+  //   : classToCreate === 1 ? new Redneck(name)
+  //     : classToCreate === 2 ? new Tool(name) : new Weapon(name);
+  const obj = classesConstructor(classToCreate, name);
 
   console.log(obj);
   setObject(obj);
@@ -48,10 +59,10 @@ const createObject = () => {
 const addItem = () => {
   const listOfObjects = getObject();
 
-  const listOfNames = listOfObjects.alive.map(({name}) => name);
+  const listOfNames = listOfObjects.alive.map(({ name }) => name);
   const indexOfName = readlineSync.keyInSelect(listOfNames, 'Кому добавить? ');
 
-  const listOfItems = listOfObjects.item.map(({name}) => name);
+  const listOfItems = listOfObjects.item.map(({ name }) => name);
   const indexOfItem = readlineSync.keyInSelect(listOfItems, 'Что добавить? ');
 
   const person = backToClass(listOfObjects.alive.at(indexOfName).name);
@@ -64,7 +75,7 @@ const addItem = () => {
   console.log(person);
   updateObject(person);
   return true;
-}
+};
 
 const deleteObject = (object) => {
   const listOfObjects = getObject();
@@ -95,25 +106,28 @@ const backToClass = (nameToFind) => {
   if (filtered.length === 0) {
     filtered = listOfObjects.item.filter(({ name }) => name === nameToFind);
     // console.log(`second search ${filtered}`);
-  };
+  }
   const jsonObject = filtered.at(0);
+  // const classes = ['apache', 'redneck', 'tool', 'weapon'];
+  const key = ['apache', 'redneck', 'tool', 'weapon'].indexOf(jsonObject.className);
+  // console.log(jsonObject);
   // [{}] -> {}
   // преоразовываем в объект класса
-  let classObject;
-  switch (jsonObject.className) {
-    case 'apache':
-      classObject = new Apache(nameToFind);
-      break;
-    case 'redneck':
-      classObject = new Redneck(nameToFind);
-      break;
-    case 'weapon':
-      classObject = new Weapon(nameToFind);
-      break;
-    default:
-      classObject = new Tool(nameToFind);
-      break;
-  }
+  const classObject = classesConstructor(key, nameToFind);
+  // switch (jsonObject.className) {
+  //   case 'apache':
+  //     classObject = new Apache(nameToFind);
+  //     break;
+  //   case 'redneck':
+  //     classObject = new Redneck(nameToFind);
+  //     break;
+  //   case 'weapon':
+  //     classObject = new Weapon(nameToFind);
+  //     break;
+  //   default:
+  //     classObject = new Tool(nameToFind);
+  //     break;
+  // }
   // указываем конкретные значения ключей
   const entries = Object.entries(jsonObject);
   // [[key, v], [key2, v2]...]
@@ -126,12 +140,12 @@ const backToClass = (nameToFind) => {
   // }
   entries.forEach(([key, value]) => {
     classObject[key] = _.isObject(value)
-      ? value.map((item) => backToClass(item))
+      ? value.map((item) => backToClass(item.name))
       : value;
   });
   return classObject;
 };
 
 export {
-  setObject, updateObject, backToClass, createObject, addItem
+  setObject, updateObject, backToClass, createObject, addItem,
 };

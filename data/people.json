@@ -21,11 +21,32 @@
       "age": 61,
       "health": 11,
       "tools": [
-
+        {
+          "name": "motiga",
+          "durability": 100,
+          "damage": 5,
+          "className": "tool"
+        }
       ],
       "damage": 7,
       "className": "apache",
       "farmingSkill": 97
+    },
+    {
+      "name": "Matvey",
+      "age": 49,
+      "health": 76,
+      "tools": [
+        {
+          "name": "motiga",
+          "durability": 100,
+          "damage": 5,
+          "className": "tool"
+        }
+      ],
+      "damage": 7,
+      "className": "redneck",
+      "warSkill": 89
     }
   ],
   "item": [
