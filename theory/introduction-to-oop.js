@@ -84,3 +84,25 @@ const vadim = new Student('Vadim', '03-23');
 console.log(vadim);
 vadim.setSurname('Tomin');
 console.log(vadim);
+
+// раскарковка
+const str = 'Matvey';
+const arr = str.split('');
+console.log(typeof(str));
+
+const bool = new Boolean();
+console.log(bool.valueOf());
+const num = new Number(9);
+console.log(4 + + '3');
+
+// Object.prototype.toString();
+const alice = {
+    name: 'Alice',
+    toString() {
+        return 2 * 2;
+    },
+};
+
+const x = new String('kek');
+console.log(`${x}`); //kek
+console.log(`${alice}`) // [object Object]
