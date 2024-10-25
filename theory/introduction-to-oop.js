@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 const student = {
     name: 'Oleg',
     getName: function getName(group='03-23', campus='mira') {
@@ -106,3 +108,68 @@ const alice = {
 const x = new String('kek');
 console.log(`${x}`); //kek
 console.log(`${alice}`) // [object Object]
+
+// статические свойства и методы
+class Teacher {
+    constructor(name, department) {
+        this.name = name;
+        this.department = department;
+        // static isTeacher = true; ошипка
+    };
+
+    getInfo() {
+        return `${this.name}, ${this.department}, ${this.constructor.wardrobe}`;
+    }
+
+    static wardrobe = false;
+    static isTeacher() {
+        // return this.getInfo();
+        this.wardrobe = this.constructor.wardrobe === false ? true : false;
+        console.log(this.wardrobe)
+    }
+};
+
+const teacher = new Teacher('Nikolay', 'IT');
+console.log(teacher.getInfo());
+
+teacher.name = 'Kolya';
+Teacher.wardrobe = true;
+console.log(teacher.getInfo());
+const teacher2 = new Teacher('Samat', 'IT');
+console.log(teacher2.getInfo())
+Teacher.isTeacher()
+console.log(teacher2.getInfo())
+Teacher.isTeacher()
+console.log(teacher2.getInfo())
+// статические св-ва и методы принадлежат классу, а не экземпляру
+
+// исключения
+const err = new Error('test error');
+console.log(err);
+// fn a() => fn b() => fn c()
+const readData = () => {
+    try {
+        const data = fs.readFileSync('folder/file.js');
+        console.log('try working');
+        return data;
+        console.log(data);
+    } catch(e) {
+        throw 'fPath error';
+    }
+}
+
+const editData = () => {
+    try {
+        readData();
+        console.log(7);
+    } catch(e) {
+        if (e === 'fPath error') {
+            throw 'выкинули потестить';
+        }
+    } finally {
+        console.log('123');   
+    }
+}
+
+// readData()
+editData();
