@@ -93,4 +93,4 @@ console.log(kolduns);
 // console.log(kolduns.filterByAge());
 const newKolduns = kolduns.filterByAge().filterByIq();
 console.log(newKolduns);
-console.log(Math.random() * Infinity);
+// console.log(Math.random() * Infinity);
