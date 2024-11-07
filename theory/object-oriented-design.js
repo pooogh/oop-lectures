@@ -76,7 +76,7 @@ class Kolduni {
     };
 
     filterByIq() {
-        const newList = this.list.filter(({iq}) => iq >= 150);
+        const newList = this.list.filter(({iq}) => iq >= 10);
         return new Kolduni(newList);
     };
 }
@@ -86,6 +86,7 @@ const listOfKolduni = [
     {name: 'Vladislav', age:  Math.round(Math.random() * 500), mana:  Math.round(Math.random() * 500), zdorovie: Math.round(Math.random() * 1000), iq: Math.round(Math.random() * 300)},
     {name: 'Nuray', age:  Math.round(Math.random() * 500), mana: 999, zdorovie: Math.round(Math.random() * 1000), iq: Math.round(Math.random() * 300)},
     {name: 'Natalia Aleksandrovna', age: Infinity, mana: Infinity, zdorovie: Infinity, iq: Infinity},
+    {name: 'George Diddy lover', age: Math.round(Math.random() * 500) - 150, zdorovie: Math.round(Math.random() * 1000), iq: Math.round(Math.random() * 300)}
 ]
 
 const kolduns = new Kolduni(listOfKolduni);
@@ -94,3 +95,33 @@ console.log(kolduns);
 const newKolduns = kolduns.filterByAge().filterByIq();
 console.log(newKolduns);
 // console.log(Math.random() * Infinity);
+
+// сборщики
+class VerifiedForDiddy {
+    constructor() {
+        this.options = {};
+    };
+
+    age(min) {
+        this.options.age = min;
+        return this;
+    };
+
+    iq(min) {
+        this.options.iq = min;
+        return this;
+    };
+
+    validate(obj) {
+        const entries = Object.entries(this.options);
+        const check = entries.filter(([key, value]) => value < obj[key]);
+        return entries.length === check.length;
+    }; 
+};
+
+const validator = new VerifiedForDiddy();
+console.log(validator);
+
+validator.age(250).iq(10);
+console.log(validator);
+listOfKolduni.forEach((koldun) => console.log(`${koldun.name} - ${validator.validate(koldun)}`));
